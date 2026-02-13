@@ -9,18 +9,16 @@ static_path = os.path.join(project_root, 'static')
 app = Flask(__name__, static_folder=static_path, static_url_path='/static')
 
 def get_tracks():
-    """Get all MP3 files from static folder"""
     tracks = []
-    if os.path.exists(static_path):
-        for filename in sorted(os.listdir(static_path)):
-            if filename.endswith('.mp3'):
-                # Create a nice display name from filename
-                name = filename.replace('.mp3', '').replace('_', ' ')
-                tracks.append({
-                    'name': f'♡ {name} ♡',
-                    'file': f'/static/{filename}'
-                })
+    static_dir = os.path.join(os.path.dirname(__file__), "static")
+    for filename in sorted(os.listdir(static_dir)):
+        if filename.lower().endswith(".mp3"):
+            tracks.append({
+                "name": f"♡ {filename.replace('.mp3','').replace('_',' ')} ♡",
+                "file": f"/static/{filename}"
+            })
     return tracks
+
 
 HTML = """
 <!DOCTYPE html>
@@ -525,3 +523,4 @@ def home():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
